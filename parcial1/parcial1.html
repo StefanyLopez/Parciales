@@ -7,135 +7,147 @@
     <body>
         <h1>Transformaciones conjuntas</h1>
         <p>Vector para la transformación =>
-        <label for="c_i">P1<input id="c_i"></label>
-        <label for="c_f">P2 <input id="c_f"></label></p>
+        <label for="c_i">p1<input id="c_i"></label>
+        <label for="c_f">p2 <input id="c_f"></label></p>
         <p>Transformación inicial
             <label for="t_i"><input id="t_i"></label></p>
         <p>Transformación final
              <label for="t_f"><input id="t_f"></label></p>
-        <button onclick="procesar()">Procesar</button>
         <p>Vector resultado
-             <label for="v_r"><input id="v_r"></label></p>
+             <label for="v_r"><input id="v_r"></label></p> 
+        <button onclick="procesar()">Procesar</button>
         <script>
             
             function procesar(){
                 
+                switch(axis){
 
+                    case 'T': aplicarTraslacion
+                    case 'R': aplicarRotacion
+                    case 'S': aplicarEscala
+
+                }
+
+                let v1 = document.getElementById('c_i').value.split(',').map(parseFloat)
+                let v2 = document.getElementById('c_f').value.split(',').map(parseFloat)
+                let v3 = document.getElementById('t_i').value.split(',').map(parseFloat)
+                let v4 = document.getElementById('t_f').value.split(',').map(parseFloat)
+
+                return switch;
 
             }
 
+            function aplicarTraslacion() {
+                const coordenadaInicial = document.getElementById('c_i').value.split(',').map(parseFloat);
+                const coordenadaFinal = document.getElementById('c_f').value.split(',').map(parseFloat);
 
-            function crearTransformacionMatriz(ValorTransformacion){
-            const matriz = [
-                [1, 0, 0, ValorTransformacion[0]],
-                [0, 1, 0, ValorTransformacion[1]],
-                [0, 0, 1, ValorTransformacion[2]],
-                [0, 0, 0, 1]
-            ];
-            return matriz;
+                const xInicial = coordenadaInicial[0];
+                const yInicial = coordenadaInicial[1];
+                const zInicial = coordenadaInicial[2];
+
+                const xFinal = coordenadaFinal[0];
+                const yFinal = coordenadaFinal[1];
+                const zFinal = coordenadaFinal[2];
+
+                const coordenadaTranslacion = document.getElementById('c_t').value.split(',').map(parseFloat);
+                const tx = coordenadaTranslacion[0];
+                const ty = coordenadaTranslacion[1];
+                const tz = coordenadaTranslacion[2];
+
+                const nxFinal = xFinal + tx;
+                const nyFinal = yFinal + ty;
+                const nzFinal = zFinal + tz;
+                const nxInicial = xInicial + tx;
+                const nyInicial = yInicial + ty;
+                const nzInicial = zInicial + tz;
+
+                const result = `El nuevo vector queda: ${nxFinal},${nyFinal},${nzFinal}.
+                Con origen en: ${nxInicial},${nyInicial},${nzInicial}`;
+                alert(result);
         }
 
-            function applyTransformacion(matriz, vector){
-                vector.push(1);
-                const result = [0, 0, 0, 0];
-                for (let i = 0; i < 4; i++){
-                    for (let j = 0; j < 4; j++){
-                        result[i] += vector[j] * matriz[i][j];
-                    } 
-                }
-                vector.pop();
-                return result.slice(0, 3);
+        function aplicarEscala() {
+            const coordenadaInicial = document.getElementById('c_i').value.split(',').map(parseFloat);
+            const coordenadaFinal = document.getElementById('c_f').value.split(',').map(parseFloat);
+
+            const xInicial = coordenadaInicial[0];
+            const yInicial = coordenadaInicial[1];
+            const zInicial = coordenadaInicial[2];
+
+            const xFinal = coordenadaFinal[0];
+            const yFinal = coordenadaFinal[1];
+            const zFinal = coordenadaFinal[2];
+
+            const escalaX = parseFloat(document.getElementById('Ex').value) || 1;
+            const escalaY = parseFloat(document.getElementById('Ey').value) || 1;
+            const escalaZ = parseFloat(document.getElementById('Ez').value) || 1;
+
+            const nxFinal = xFinal * escalaX;
+            const nyFinal = yFinal * escalaY;
+            const nzFinal = zFinal * escalaZ;
+            const nxInicial = xInicial * escalaX;
+            const nyInicial = yInicial * escalaY;
+            const nzInicial = zInicial * escalaZ;
+
+            const result = `El nuevo vector queda: ${nxFinal},${nyFinal},${nzFinal}.
+            Con origen en: ${nxInicial},${nyInicial},${nzInicial}`;
+            alert(result);
+        }
+
+        function aplicarRotacion(axis) {
+            const coordenadaInicial = document.getElementById('c_i').value.split(',').map(parseFloat);
+            const coordenadaFinal = document.getElementById('c_f').value.split(',').map(parseFloat);
+
+            const xInicial = coordenadaInicial[0];
+            const yInicial = coordenadaInicial[1];
+            const zInicial = coordenadaInicial[2];
+
+            const xFinal = coordenadaFinal[0];
+            const yFinal = coordenadaFinal[1];
+            const zFinal = coordenadaFinal[2];
+
+            const grados = parseFloat(document.getElementById('Gr').value) || 0;
+            const radianes = grados * (Math.PI / 180);
+
+            let nxFinal, nyFinal, nzFinal, nxInicial, nyInicial, nzInicial;
+
+            switch (axis) {
+                case 'x':
+                    nyFinal = yFinal * Math.cos(radianes) - zFinal * Math.sin(radianes);
+                    nzFinal = zFinal * Math.cos(radianes) + yFinal * Math.sin(radianes);
+                    nyInicial = yInicial * Math.cos(radianes) - zInicial * Math.sin(radianes);
+                    nzInicial = zInicial * Math.cos(radianes) + yInicial * Math.sin(radianes);
+
+                    nxFinal = xFinal;
+                    nxInicial = xInicial;
+                    break;
+
+                case 'y':
+                    nxFinal = xFinal * Math.cos(radianes) + zFinal * Math.sin(radianes);
+                    nzFinal = zFinal * Math.cos(radianes) - xFinal * Math.sin(radianes);
+                    nxInicial = xInicial * Math.cos(radianes) + zInicial * Math.sin(radianes);
+                    nzInicial = zInicial * Math.cos(radianes) - xInicial * Math.sin(radianes);
+
+                    nyFinal = yFinal;
+                    nyInicial = yInicial;
+                    break;
+
+                case 'z':
+                    nxFinal = xFinal * Math.cos(radianes) + yFinal * Math.sin(radianes);
+                    nyFinal = yFinal * Math.cos(radianes) - xFinal * Math.sin(radianes);
+                    nxInicial = xInicial * Math.cos(radianes) + yInicial * Math.sin(radianes);
+                    nyInicial = yInicial * Math.cos(radianes) - xInicial * Math.sin(radianes);
+
+                    nzFinal = zFinal;
+                    nzInicial = zInicial;
+                    break;
             }
 
-            function byId(sid){
-                return document.getElementById(sid).value;
-            }
-
-            function strarr2num(strarr, lim){
-                arrs = strarr.split(lim);
-                arrn = [];
-                arrs.forEach((elem) => {
-                    arrn.push(Number(elem));
-                });
-                return arrn;
-            }
-
-        
-            function escalaMatriz(escalar){
-                return [
-                    [escalar[0], 0, 0, 0],
-                    [0, escalar[1], 0, 0],
-                    [0, 0, escalar[2], 0],
-                    [0, 0, 0, 1]
-                ];
-            }
-
-            function rotacionXMatriz(angulo){
-                const radian = (angulo * Math.PI) / 180;
-                return [
-                    [1, 0, 0, 0],
-                    [0, Math.cos(radian), -Math.sin(radian), 0],
-                    [0, Math.sin(radian), Math.cos(radian), 0],
-                    [0, 0, 0, 1]
-                ];
-            }
-
-            function rotacionYMatriz(angulo){
-                const radian = (angulo * Math.PI) / 180;
-                return [
-                    [Math.cos(radian), 0, Math.sin(radian), 0],
-                    [0, 1, 0, 0],
-                    [-Math.sin(radian), 0, Math.cos(radian), 0],
-                    [0, 0, 0, 1]
-                ];
-            }
-
-            function rotacionZMatriz(angulo){
-                const radian = (angulo * Math.PI) / 180;
-                return [
-                    [Math.cos(radian), -Math.sin(radian), 0, 0],
-                    [Math.sin(radian), Math.cos(radian), 0, 0],
-                    [0, 0, 1, 0],
-                    [0, 0, 0, 1]
-                ];
-            } 
+            const result = `El vector resultante es: ${nxFinal},${nyFinal},${nzFinal}.
+            Con su origen en: ${nxInicial},${nyInicial},${nzInicial}`;
+            alert(result);
+        }
             
-            function traslacion(){
-                var aos = document.getElementById('vo').value;
-                aon = strarr2num(aos, ','); 
-                atn = strarr2num(byId('vt'), ',');
-                document.getElementById('vr').value = applyTransformacion(crearTransformacionMatriz(atn), aon).join(', ');
-            }
-
-            function escala(){
-                var aos = document.getElementById('vo').value;
-                aon = strarr2num(aos, ','); 
-                escalar = strarr2num(byId('ve'), ',');
-                document.getElementById('vr').value = applyTransformacion(escalaMatriz(escalar), aon).join(', ');
-            }
-
-            function rotacionX(){
-                var aos = document.getElementById('vo').value;
-                aon = strarr2num(aos, ','); 
-                angulo = parseFloat(byId('gr'));
-                document.getElementById('vr').value = applyTransformacion(rotacionXMatriz(angulo), aon).join(', ');
-            }
-
-            function rotacionY(){
-                var aos = document.getElementById('vo').value;
-                aon = strarr2num(aos, ','); 
-                angulo = parseFloat(byId('gr'));
-                document.getElementById('vr').value = applyTransformacion(rotacionYMatriz(angulo), aon).join(', ');
-            }
-
-            function rotacionZ(){
-                var aos = document.getElementById('vo').value;
-                aon = strarr2num(aos, ','); 
-                angulo = parseFloat(byId('gr'));
-                document.getElementById('vr').value = applyTransformacion(rotacionZMatriz(angulo), aon).join(', ');
-            }   
-
-
 
 
         </script>
