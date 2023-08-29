@@ -19,18 +19,29 @@
         <script>
             
             function procesar(){
-                const  = document.getElementById('t_i').value.trim().charAt(O);
+                const  art= document.getElementById('t_i').value.trim().charAt(O);
               
                 let v1 = document.getElementById('c_i').value.split(',').map(parseFloat)
                 let v2 = document.getElementById('c_f').value.split(',').map(parseFloat)
                 let v3 = document.getElementById('t_i').value.split(',').map(parseFloat)
                 let v4 = document.getElementById('t_f').value.split(',').map(parseFloat)
 
-                document.getElementById('v_r').value = v4
+                
+                document.getElementById('v_r').value= transformacion(v4,transformacion(v3,v1))+ ', ' + transformacion(v4,transformacion(v3,v2));
 
             }
 
-
+            function transformacion(arr1,arr2){
+                if(arr1[0] == 'T'){
+                    return traslacion(arr1,arr2);
+                }else if (arr1[0]=='R'){
+                    return rotacionX(arr1,arr2);
+                }else if (arr1[0] == 'S'){
+                    return escala(arr1,arr2);
+                } else {
+                    alert("Transformaci{on no valida");
+                }
+            }
 
             function crearTransformacionMatriz(ValorTransformacion){
             const matriz = [
