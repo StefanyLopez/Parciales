@@ -19,7 +19,7 @@
         <script>
             
             function procesar(){
-                const  art= document.getElementById('t_i').value.trim().charAt(O);
+                
               
                 let v1 = document.getElementById('c_i').value.split(',').map(parseFloat)
                 let v2 = document.getElementById('c_f').value.split(',').map(parseFloat)
@@ -27,7 +27,7 @@
                 let v4 = document.getElementById('t_f').value.split(',').map(parseFloat)
 
                 
-                document.getElementById('v_r').value= transformacion(v4,transformacion(v3,v1))+ ', ' + transformacion(v4,transformacion(v3,v2));
+                document.getElementById('v_r').value = transformacion(v4,transformacion(v3,v1))+ ', ' + transformacion(v4,transformacion(v3,v2));
 
             }
 
@@ -39,9 +39,10 @@
                 }else if (arr1[0] == 'S'){
                     return escala(arr1,arr2);
                 } else {
-                    alert("Transformaci{on no valida");
+                    alert("Transformación no valida");
                 }
             }
+
 
             function crearTransformacionMatriz(ValorTransformacion){
             const matriz = [
@@ -119,41 +120,26 @@
         } 
         
         function traslacion(){
-            var aos = document.getElementById('vo').value;
+            var aos = document.getElementById('c_i').value;
             aon = strarr2num(aos, ','); 
-            atn = strarr2num(byId('vt'), ',');
-            document.getElementById('vr').value = applyTransformacion(crearTransformacionMatriz(atn), aon).join(', ');
+            atn = strarr2num(byId('t_i'), ',');
+            document.getElementById('v_r').value = applyTransformacion(crearTransformacionMatriz(atn), aon).join(', ');
         }
 
         function escala(){
-            var aos = document.getElementById('vo').value;
+            var aos = document.getElementById('c_i').value;
             aon = strarr2num(aos, ','); 
-            escalar = strarr2num(byId('ve'), ',');
-            document.getElementById('vr').value = applyTransformacion(escalaMatriz(escalar), aon).join(', ');
+            escalar = strarr2num(byId('t_i'), ',');
+            document.getElementById('v_r').value = applyTransformacion(escalaMatriz(escalar), aon).join(', ');
         }
 
         function rotacionX(){
-            var aos = document.getElementById('vo').value;
+            var aos = document.getElementById('c_i').value;
             aon = strarr2num(aos, ','); 
-            angulo = parseFloat(byId('gr'));
-            document.getElementById('vr').value = applyTransformacion(rotacionXMatriz(angulo), aon).join(', ');
-        }
-
-        function rotacionY(){
-            var aos = document.getElementById('vo').value;
-            aon = strarr2num(aos, ','); 
-            angulo = parseFloat(byId('gr'));
-            document.getElementById('vr').value = applyTransformacion(rotacionYMatriz(angulo), aon).join(', ');
-        }
-
-        function rotacionZ(){
-            var aos = document.getElementById('vo').value;
-            aon = strarr2num(aos, ','); 
-            angulo = parseFloat(byId('gr'));
-            document.getElementById('vr').value = applyTransformacion(rotacionZMatriz(angulo), aon).join(', ');
+            angulo = parseFloat(byId('t_i'));
+            document.getElementById('v_r').value = applyTransformacion(rotacionXMatriz(angulo), aon).join(', ');
         }
             
-
 
         </script>
         </HTML>
